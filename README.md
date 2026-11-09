@@ -91,3 +91,61 @@ Currently under development.
 Chaitanya Mevekari
 
 B.Tech - Computer Science and Engineering
+
+## Project Features
+
+- Synthetic payment transaction generation
+- Data cleaning and preprocessing
+- Payment reconciliation and retry tracking
+- Refund classification and investigation
+- Explainable rule-based anomaly detection
+- SQLite database integration
+- Interactive Streamlit analytics dashboard
+- Transaction search and risk filtering
+- PDF audit report generation
+- CSV investigation queue export
+- Automated data validation using unittest
+
+## Technology Stack
+
+Python 3.12, Pandas, SQLite, Streamlit,
+Plotly, ReportLab, Git and GitHub.
+
+## Run the Project
+
+1. Create and activate a Python virtual environment.
+2. Install dependencies:
+
+   pip install -r requirements.txt
+
+3. Generate the synthetic datasets:
+
+   python generate_data.py
+
+4. Execute the data pipeline:
+
+   python run_pipeline.py
+   python run_reconciliation.py
+   python run_anomaly.py
+   python run_database.py
+
+5. Launch the dashboard:
+
+   streamlit run app.py
+
+6. Run automated tests:
+
+   python -m unittest discover -s tests -v
+
+## Testing
+
+10 automated validation tests passed.
+
+## Disclaimer
+
+PayGuard uses synthetic financial data.
+Anomaly flags are indicators for manual
+investigation, not confirmed fraud.
+
+This project is intended for educational
+and demonstration purposes.
