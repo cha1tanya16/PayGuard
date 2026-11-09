@@ -4,6 +4,7 @@ import pandas as pd
 import plotly.express as px
 import sqlite3
 from pathlib import Path
+from modules.audit_reports import create_review_csv, create_audit_pdf
 
 # -------------------------------------------------
 # PAGE CONFIGURATION
@@ -53,7 +54,8 @@ page = st.sidebar.radio(
         "Risk Analytics",
         "Merchant Analysis",
         "Transaction Explorer",
-        "Investigation Queue"
+        "Investigation Queue",
+        "Audit Reports"
     ]
 )
 
@@ -541,6 +543,78 @@ elif page == "Investigation Queue":
         )
 
         transaction_details(selected_id)
+
+# -------------------------------------------------
+# PAGE 8: AUDIT REPORTS
+# -------------------------------------------------
+elif page == "Audit Reports":
+
+    st.title("Audit Reports")
+    st.write(
+        "Generate downloadable reports for transaction "
+        "monitoring and manual investigation."
+    )
+
+    flagged_records = anomalies[
+        anomalies["anomaly_detected"] == 1
+    ]
+
+    high_risk_records = anomalies[
+        anomalies["risk_level"] == "HIGH"
+    ]
+
+    c1, c2, c3 = st.columns(3)
+
+    c1.metric("Total Transactions", len(ledger))
+    c2.metric("Flagged Records", len(flagged_records))
+    c3.metric("High-Risk Records", len(high_risk_records))
+
+    st.divider()
+
+    st.subheader("Download Reports")
+
+    st.download_button(
+        label="Download Investigation Queue (CSV)",
+        data=create_review_csv(anomalies),
+        file_name="payguard_investigation_queue.csv",
+        mime="text/csv"
+    )
+
+    pdf_data = create_audit_pdf(ledger, anomalies)
+
+    st.download_button(
+        label="Download Audit Report (PDF)",
+        data=pdf_data,
+        file_name="payguard_audit_report.pdf",
+        mime="application/pdf"
+    )
+
+    st.divider()
+
+    st.subheader("Audit Summary")
+
+    st.write(
+        f"Total transaction volume: ₹{ledger['amount'].sum():,.2f}"
+    )
+
+    st.write(
+        f"Total refund amount: ₹{ledger['total_refund'].sum():,.2f}"
+    )
+
+    st.write(
+        f"Payment success rate: "
+        f"{(ledger['final_payment_status'] == 'SUCCESS').mean() * 100:.2f}%"
+    )
+
+    st.write(
+        f"High-risk records: {len(high_risk_records)}"
+    )
+
+    st.info(
+        "All flagged records require manual review. "
+        "Anomaly detection does not confirm fraudulent activity."
+    )
+        
 
 
 # -------------------------------------------------
