@@ -1,0 +1,7 @@
+dataset,original_records,clean_records,rejected_records,duplicate_records
+transactions,500,500,0,0
+customers,200,200,0,0
+merchants,30,30,0,0
+payment_status,712,697,0,15
+refunds,79,79,0,0
+device_summary,200,200,0,0
